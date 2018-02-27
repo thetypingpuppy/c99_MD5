@@ -152,7 +152,7 @@ int main(int argc, char* argv[]){
     uint8_t* c0_ = (uint8_t*) &c0;
     uint8_t* d0_ = (uint8_t*) &d0;
     
-    printf("\r\n\r\nDigest is: \t\t\t%x%x%x%x %x%x%x%x %x%x%x%x %x%x%x%x\r\n", a0_[0],a0_[1],a0_[2],a0_[3],b0_[0],b0_[1],b0_[2],b0_[3],c0_[0],c0_[1],c0_[2],c0_[3],d0_[0],d0_[1],d0_[2],d0_[3]);
+    printf("\r\n\r\nDigest is: \t\t\t%02x%02x%02x%02x %02x%02x%02x%02x %02x%02x%02x%02x %02x%02x%02x%02x\r\n", a0_[0],a0_[1],a0_[2],a0_[3],b0_[0],b0_[1],b0_[2],b0_[3],c0_[0],c0_[1],c0_[2],c0_[3],d0_[0],d0_[1],d0_[2],d0_[3]);
 
     free(paddedInput);
 
