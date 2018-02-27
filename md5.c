@@ -9,7 +9,6 @@
 int main(int argc, char* argv[]){
 
     if (argc == 1){
-
         printf("Fatal error. No input given.");
         return 1;
     }
@@ -20,19 +19,25 @@ int main(int argc, char* argv[]){
     uint8_t* plengthOfInputInBits = (uint8_t*) &lengthOfInputInBits;
     uint8_t* pLengthOfInputInBytes = (uint8_t*) &lengthOfInputInBytes;
 
+    // Print input
     printf("Input: \t\t\t\t");
 
     for(int i = 0; i<lengthOfInputInBytes; i++){
         printf("0x%x ", *(argv[1]+i));
     }
+
+    // Size of input in bits
     printf("\r\nSize of Input: \t\t\t%i bits (0x%016x).", lengthOfInputInBits, lengthOfInputInBits);
     
+    // Size of input in bits modulo 512
     int sizePlusOneModulo64 = (strlen(argv[1])+1)%64;
 
-    printf("\r\n\t+ 1 modulo 64: \t\t%i", sizePlusOneModulo64);
-    printf("\r\nPadding required: \t\t%i (to make 56 modulo 64)", 56 - sizePlusOneModulo64);
+    printf("\r\n+ 1 modulo 64 (512 bits): \t%i bytes", sizePlusOneModulo64);
+
+    printf("\r\nPadding required: \t\t%i bytes (to make 56 modulo 64)", 56 - sizePlusOneModulo64);
 
     uint64_t lengthOfPaddedInputInBytes = strlen(argv[1])+1+56-sizePlusOneModulo64 + 8;
+
     printf("\r\nPreprocessed input size: \t%i bytes", lengthOfPaddedInputInBytes);
 
     uint8_t* paddedInput = (uint8_t*) calloc(lengthOfPaddedInputInBytes,1);
@@ -47,9 +52,6 @@ int main(int argc, char* argv[]){
         paddedInput[i] = *(plengthOfInputInBits+i%8); //mod 8 works because n*64+56 mod 8 = 1, n*64+56 mod 8 = 2, etc...
     }
 
-
-
-    
     printf("\r\nPreprocessed input: \t\t");
 
     for(int i = 0; i < lengthOfPaddedInputInBytes; i++){
@@ -59,15 +61,12 @@ int main(int argc, char* argv[]){
         printf("0x%02x ", *(paddedInput+i));
     }
 
-
-
     int s[64] = { 
                 7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22, 
                 5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20, 
                 4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23, 
                 6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 
                 };
-
 
     int K[64] = {
                 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
@@ -93,8 +92,6 @@ int main(int argc, char* argv[]){
     uint32_t b0 = 0xefcdab89;//B
     uint32_t c0 = 0x98badcfe;//C
     uint32_t d0 = 0x10325476;//D
-
-
 
     uint32_t* paddedInput_ = (uint32_t*) paddedInput;
 
@@ -149,9 +146,6 @@ int main(int argc, char* argv[]){
         c0 = c0 + C;
         d0 = d0 + D;
     }
-
-
-    //}
 
     uint8_t* a0_ = (uint8_t*) &a0;
     uint8_t* b0_ = (uint8_t*) &b0;
