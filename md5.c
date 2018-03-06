@@ -102,43 +102,43 @@ int main(int argc, char* argv[]){
     uint32_t F;
     uint32_t g;
 
-    for(uint32_t i = 0; i < lengthOfPaddedInputInBytes / 64; i++){
+    for(uint32_t k = 0; k < lengthOfPaddedInputInBytes / 64; k++){
 
         A = a0;
         B = b0;
         C = c0;
         D = d0;
         
-        for(uint32_t j = 0; j < 64; j++){
+        for(uint32_t i = 0; i < 64; i++){
 
-            if (j >= 0 && j < 16){
+            if (i >= 0 && i < 16){
                 F = (B & C) | ((~B) & D);
-                g = j;
+                g = i;
 
             }
-            else if( j >= 16 && j <= 31){
+            else if( i >= 16 && i <= 31){
                 F = (D & B) | ((~D) & C);
-                g = (5*j + 1) % 16;
+                g = (5*i + 1) % 16;
 
             }
-            else if(j >= 32 && j <=47){
+            else if(i >= 32 && i <=47){
 
                 F = B ^ C ^ D;
-                g = (3*j + 5) % 16;
+                g = (3*i + 5) % 16;
             }
 
-            else if(j >= 48 && j <= 63){
+            else if(i >= 48 && i <= 63){
                 F = C ^ (B | (~D));
-                g = (7*j) % 16;
+                g = (7*i) % 16;
 
             }
 
 
-            F = F + A + K[j] + paddedInput_[i*16+g];
+            F = F + A + K[i] + paddedInput_[k*16+g];
             A = D;
             D = C;
             C = B;
-            B = B + LEFTROTATE(F, s[j]);
+            B = B + LEFTROTATE(F, s[i]);
         }
 
         a0 = a0 + A;
